@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build-project">
+	<!-- init -->
+	<target name="init">
+		<tstamp>
+			<format property="build.time" pattern="MM/dd/yyyy hh:mm aa" />
+		</tstamp>
+		<property name="project.root.dir" value="." />
+		<property name="project.name" value="NetflowDemo" />
+
+		<property name="project.lib.dir" value="${project.root.dir}/lib" />
+		<property name="project.src.dir" value="${project.root.dir}/src" />
+		<property name="project.build.dir" value="${project.root.dir}/build" />
+
+		<path id="extern-jar">
+			<pathelement path="${project.root.dir}/lib/log4j-1.2.14.jar" />
+	
+		</path>
+	</target>
+
+	<!-- clean -->
+	<target name="clean" depends="init">
+		<delete dir="${project.build.dir}" />
+		<mkdir dir="${project.build.dir}" />
+	</target>
+
+	<!-- clean-project-->
+	<target name="clean-project" depends="init,clean">
+	</target>
+
+	<!-- complie project-->
+	<target name="compile-project" depends="init">
+		<javac destdir="${project.build.dir}" debug="on">
+			<src path="${project.src.dir}" />
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="extern-jar" />
+				<pathelement location="${project.build.dir}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- jar project-->
+	<target name="jar-project" depends="init">
+		<jar jarfile="${project.lib.dir}/${project.name}.jar">
+			<fileset dir="${project.build.dir}" includes="**" />
+		</jar>
+	</target>
+
+	<target name="build-project" depends="clean-project,compile-project,jar-project" />
+</project>
